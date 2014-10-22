@@ -16,6 +16,8 @@ const WorkspaceScroller = new Lang.Class({
 		this._panelScrollEventId = Main.panel.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 		this._lastScrollTime = new Date().getTime();
 		this._settings = Prefs.loadSettings();
+		this._cache = false;
+		this._settingsChangedId = this._settings.connect('changed', Lang.bind(this, this._cacheInvalidate));
 	},
 
 	destroy: function() {
@@ -23,13 +25,28 @@ const WorkspaceScroller = new Lang.Class({
 			Main.panel.actor.disconnect(this._panelScrollEventId);
 			this._panelScrollEventId = 0;
 		}
+		if (this._settingsChangedId) {
+			this._settings.disconnect(this._settingsChangedId);
+			this._settingsChangedId = 0;
+		}
+	},
+
+	cacheInvalidate: function() {
+		this._cache = false;
+	},
+	cacheUpdate: function() {
+		this._cdelay = this._settings.get_int('scroll-delay');
+		this._cnoLast = this._settings.get_boolean('ignore-last-workspace');
+		this._cache = true;
 	},
 
 	get _delay() {
-		return this._settings.get_int('scroll-delay');
+		if (!this._cache) cacheUpdate();
+		return this._cdelay;
 	},
 	get _noLast() {
-		return this._settings.get_boolean('ignore-last-workspace');
+		if (!this._cache) cacheUpdate();
+		return this._cnoLast;
 	},
 
 	_activate : function(index) {
