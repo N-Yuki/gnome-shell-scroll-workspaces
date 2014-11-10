@@ -1,7 +1,7 @@
 PROJECT = scroll-workspaces
 
 SCHEMAS_PATH = $(PROJECT)/schemas
-SCHEMA = org.gnome.shell.extensions.scroll-workspaces.gschema.xml
+SCHEMA = org.gnome.shell.extensions.n-yuki.scroll-workspaces.gschema.xml
 SCHEMA_SRC = $(SCHEMAS_PATH)/$(SCHEMA)
 SCHEMA_BIN = $(SCHEMAS_PATH)/gschemas.compiled
 
