@@ -1,7 +1,7 @@
 const Lang = imports.lang;
 const Clutter = imports.gi.Clutter;
-const Shell = imports.gi.Shell;
 const Meta = imports.gi.Meta;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 
@@ -42,7 +42,7 @@ const WorkspaceScroller = new Lang.Class({
 
 	_onScrollEvent: function(actor, event) {
 		let source = event.get_source();
-		if (!(source instanceof Shell.GenericContainer)) {
+		if (source.get_first_child() instanceof St.Icon) {
 			// Actors in the "status" area may have their own scroll events
 			return Clutter.EVENT_PROPAGATE;
 		}
